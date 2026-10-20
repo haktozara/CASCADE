@@ -1,0 +1,90 @@
+technique,test,context,section,action,predicate_old,predicate_new,category_new,justification,needs_manual_verification
+T1087.001,11,,preconditions,rename,file-exists,plink-executable-missing,Environment,"plink.exe not recognized as valid command - missing executable dependency, not a generic file-exists check",FALSE
+T1082,30,elevated,effects,rename,not-bios-info-discovered,bios-information-discovered,Information,Registry query returned SystemBiosVersion successfully before later unrelated error - BIOS info WAS discovered,FALSE
+T1053.005,12,,effects,rename,scheduled-task-created,not-scheduled-task-created,Privilege/User,"No schtasks-specific SUCCESS line in two independent VM runs; operation-completed-successfully line belongs to the registry write step, not schtasks",FALSE
+T1082,37,normal,preconditions,drop,command-prompt-invokable,,,"Duplicate Executor-layer claim alongside powershell-invokable - same invocation chain from two angles, merge/drop one",FALSE
+T1560.001,10,,effects,drop,command-not-found-error,,,Duplicates plink-executable-missing (Environment) - same missing-binary fact recategorized as a Process effect,FALSE
+T1082,15,elevated,effects,rename,not-information-system-info-discovered,not-system-info-discovered,Information,Malformed predicate name - category name accidentally folded into predicate string; should follow clean not-X convention,FALSE
+T1082,15,elevated,effects,drop,process-spawned,,,Failure occurred within the single already-running PowerShell session via iex - no second process was actually spawned,FALSE
+T1055,6,,preconditions,add,,av-active,Environment,"Failure was AV/signature detection, not privilege - replace any privilege-denial predicate with av-active/edr-signature-match per T1055 corpus finding",FALSE
+T1055,7,,preconditions,add,,av-active,Environment,"Failure was AV/signature detection, not privilege - same correction as T1055 #6",FALSE
+T1055,8,,preconditions,add,,av-active,Environment,"YAML elevation_required is false - failure was AV/signature detection, not privilege",FALSE
+T1055,11,,preconditions,add,,av-active,Environment,"No elevation required - file flagged as virus, AV/signature detection is the actual blocker",FALSE
+T1112,72,,effects,rename,registry-key-set,registry-key-not-modified,Environment,CIM ReturnValue 5 = ACCESS_DENIED despite exit code 0 - exit code alone insufficient for CIM/WMI method invocations,FALSE
+T1560.001,11,,effects,drop,executor-failure,,,"Log/execution-outcome artifact, not a cyber-relevant planning predicate",FALSE
+T1560.001,3,,effects,rename,file-compressed,file-created,Environment,"Evidence only shows file creation, not confirmed WinZip compression",FALSE
+T1082,36,elevated,preconditions,drop,cmd-invokable,,,Extraneous - not a meaningful planning predicate for this test; negative shadow-copy finding kept as-is,FALSE
+T1021.002,2,,preconditions,rename,valid-credentials-for-admin-share,current-session-has-local-admin-rights,Privilege/User,Cross-test contamination - default credential text pulled from Test 1's YAML; Test 2 supplies no explicit credentials at all,FALSE
+T1021.002,2,,preconditions,rename,network-access-to-target,loopback-share-accessible,Environment,"Test 2 uses localhost loopback, not a genuine remote-network dependency - must not be counted as evidence for real remote-network predicates",FALSE
+T1112,26,,preconditions,drop,cmd-invokable,,,Not a meaningful planning predicate,FALSE
+T1112,26,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Operation failed with Access is denied,FALSE
+T1112,44,,preconditions,drop,cmd-invokable,,,Not a meaningful planning predicate,FALSE
+T1112,44,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,All registry modifications failed with Access is denied,FALSE
+T1112,45,,effects,drop,access-denied,,,"Execution metadata, not a standalone planning predicate",FALSE
+T1112,45,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry change failed,FALSE
+T1112,49,,preconditions,drop,cmd-invokable,,,Not a planning predicate,FALSE
+T1112,49,,effects,drop,access-denied,,,Not a planning predicate,FALSE
+T1112,49,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry change failed,FALSE
+T1112,61,,preconditions,drop,cmd-invokable,,,Not a planning predicate,FALSE
+T1112,61,,preconditions,drop,user-is-admin,,,YAML states elevation_required false - unsupported,FALSE
+T1112,61,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry change failed,FALSE
+T1112,62,,preconditions,drop,user-is-admin,,,YAML states elevation_required false - unsupported,FALSE
+T1112,62,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry change failed,FALSE
+T1112,63,,preconditions,drop,user-is-admin,,,YAML states elevation_required false - unsupported,FALSE
+T1112,63,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry modification failed,FALSE
+T1112,7,,preconditions,drop,user-is-not-admin,,,Not a meaningful planning predicate,FALSE
+T1112,7,,effects,drop,execution-policy-bypass-attempted,,,Not a confirmed state change - command failed,FALSE
+T1112,82,,preconditions,drop,cmd-invokable,,,Not a useful planning predicate (transcribed as md-invokable in raw note - verify exact key),FALSE
+T1112,82,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry change failed with access denied,FALSE
+T1112,86,,effects,drop,access-denied,,,"Execution metadata, not a standalone planning predicate",FALSE
+T1112,86,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Registry modification failed,FALSE
+T1112,88,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Access is denied means the modification did not happen - should not be treated as a confirmed achieved effect,FALSE
+T1112,50,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Only the attempt occurred - registry change did not succeed,FALSE
+T1112,54,,effects,rename,registry-key-modified,registry-key-not-modified,Environment,Access is denied confirms the change did not occur,FALSE
+T1112,57,,effects,drop,registry-key-write-failed,,,Merged predicate conflating cause and effect - split into two per T1112-28 precedent,FALSE
+T1112,57,,effects,add,,access-denied,Privilege/User,"Split from merged registry-key-write-failed predicate, per T1112-28 precedent",FALSE
+T1112,57,,effects,add,,registry-key-not-modified,Environment,"Split from merged registry-key-write-failed predicate, per T1112-28 precedent",FALSE
+T1112,66,,preconditions,drop,user-is-admin,,,HKCU modification with elevation_required:False does not require admin privileges,FALSE
+T1112,67,,preconditions,drop,user-is-admin,,,HKCU modification does not require admin - YAML explicitly states elevation_required:False,FALSE
+T1112,68,,preconditions,drop,user-is-admin,,,YAML says elevation_required:False and target is HKCU - admin not required,FALSE
+T1112,40,,effects,add,,registry-key-modified,Environment,Evidence confirms successful registry writes but checklist only had cmd-invokable,FALSE
+T1112,41,,effects,add,,registry-key-modified,Environment,Execution succeeded but checklist was incomplete - missing achieved effect,FALSE
+T1560.001,2,,effects,rename,file-compressed,file-compression-failed,Environment,"Evidence shows source file exists then 'system cannot find path specified' - compression likely failed, not succeeded",FALSE
+T1560.001,2,,preconditions,drop,winrar-installed,,,Cannot be verified from evidence alone - no dependency/output shown,FALSE
+T1560.001,4,,effects,rename,file-compressed,file-created,Environment,Compression not confirmed by evidence - only file creation shown,FALSE
+T1082,36,normal,preconditions,add,,elevation-required-for-vssadmin,Privilege/User,"Causal A/B pair: normal context denied (exit code 2, elevation message); elevated context succeeds - vssadmin enumeration requires elevation",FALSE
+T1046,7,,preconditions,add,,external-payload-unreachable,Environment,"Script download from raw.githubusercontent.com failed; command never executed. Matches environment/tooling-gap pattern seen in T1055 test 1, T1021.002 test 3, T1053.005 test 5 - not a genuine technique failure.",FALSE
+T1055,6,,unconsumed_or_uncertain,drop,elevated-privilege,,,"AV block occurs pre-privilege-check; elevation status not a causal factor in this failure. Resolved, not left uncertain.",FALSE
+T1055,7,,unconsumed_or_uncertain,drop,elevated-privilege,,,"AV block occurs pre-privilege-check; elevation status not a causal factor in this failure. Resolved, not left uncertain.",FALSE
+T1055,8,,unconsumed_or_uncertain,drop,elevated-privilege,,,"AV block occurs pre-privilege-check; elevation status not a causal factor in this failure. Resolved, not left uncertain.",FALSE
+T1055,8,,unconsumed_or_uncertain,drop,access-denied,,,No independent access-denied evidence beyond the AV-flagged-virus failure; not a distinct causal path. Not counted separately in the 13-test breakdown.,FALSE
+T1055,11,,unconsumed_or_uncertain,drop,elevated-privilege,,,"AV block occurs pre-privilege-check; elevation status not a causal factor in this failure. Resolved, not left uncertain.",FALSE
+T1082,34,elevated,effects,rename,os-information-discovered,cim-query-executed-output-unconfirmed,Process,"Evidence log shows only test-runner wrapper output (Executing test.../Exit code 0/Done) - no captured OS info. Get-CimInstance output was piped to Out-Null and never observed, so exit code 0 confirms execution only, not that information was actually discovered. Downgraded from Information to Process pending clearer evidence.",FALSE
+T1082,34,normal,effects,rename,os-information-discovered,cim-query-executed-output-unconfirmed,Process,"Evidence log shows only test-runner wrapper output (Executing test.../Exit code 0/Done) - no captured OS info. Get-CimInstance output was piped to Out-Null and never observed, so exit code 0 confirms execution only, not that information was actually discovered. Downgraded from Information to Process pending clearer evidence.",FALSE
+T1018,18,,preconditions,rename,domain-joined,domain-joined,Environment,The test requires the system to be part of a domain to enumerate Active Directory computers.,FALSE
+T1018,22,,preconditions,rename,file-exists,file-exists,Environment,"The YAML specifies that Netscan must be installed at a specific path, indicating a file existence check is required.",FALSE
+T1041,1,,preconditions,rename,file-exists,file-exists,Environment,The command checks for the existence of the file at #{filepath} before attempting to exfiltrate it.,FALSE
+T1053.005,10,,preconditions,rename,file-exists,file-exists,Environment,The test requires the GhostTask.exe tool to exist in the specified directory as per the YAML dependencies.,FALSE
+T1053.005,12,,effects,rename,not-scheduled-task-created,not-scheduled-task-created,Environment,"No schtasks-specific SUCCESS line in two independent VM runs; operation-completed-successfully line belongs to the registry write step, not schtasks",FALSE
+T1053.005,6,,preconditions,rename,file-exists,file-exists,Environment,"The dependency requires the XML file to exist at the specified location, as checked by the prereq_command.",FALSE
+T1053.005,8,,preconditions,rename,file-exists,file-exists,Environment,"The XML file must exist at the specified path, as indicated by the dependency check in the YAML.",FALSE
+T1053.005,9,,effects,rename,not-scheduled-task-created,not-scheduled-task-created,Privilege/User,"The execution evidence shows 'Access is denied' and 'The system cannot find the file specified', indicating the scheduled task was not created.",FALSE
+T1055,10,,preconditions,rename,file-exists,file-exists,Environment,The executable 'CreateRemoteThreadNative.exe' must exist at the specified path for the test to run.,FALSE
+T1055,11,,preconditions,rename,file-exists,file-exists,Environment,The executable 'CreateThread.exe' must exist at the specified path for the test to run.,FALSE
+T1055,12,,preconditions,rename,file-exists,file-exists,Environment,The executable 'CreateThreadNative.exe' must exist at the specified path to be invoked.,FALSE
+T1055,13,,preconditions,rename,file-exists,file-exists,Environment,The test requires the executable 'uuid_injection.exe' to exist at the specified location.,FALSE
+T1055,1,,preconditions,rename,file-exists,file-exists,Environment,The prerequisite checks if the VBA macro file exists at the specified path.,FALSE
+T1055,3,,preconditions,rename,file-exists,file-exists,Environment,The test requires the existence of the InjectView.exe file at a specified path.,FALSE
+T1055,4,,preconditions,rename,file-exists,file-exists,Environment,The test requires the executable 'redVanity.exe' to be present at the specified path.,FALSE
+T1055,5,,preconditions,rename,file-exists,file-exists,Environment,The test requires the vulnerable DLL to exist at the specified location as per the YAML prerequisites.,FALSE
+T1055,6,,preconditions,rename,file-exists,file-exists,Environment,The executable 'UuidFromStringA.exe' must exist at the specified path for the test to run.,FALSE
+T1055,7,,preconditions,rename,file-exists,file-exists,Environment,The executable 'EtwpCreateEtwThread.exe' must exist at the specified path for the test to run.,FALSE
+T1055,8,,preconditions,rename,file-exists,file-exists,Environment,The test requires the RtlCreateUserThread.exe file to be present at the specified location.,FALSE
+T1055,9,,preconditions,rename,file-exists,file-exists,Environment,The test requires the CreateRemoteThread.exe file to be present at the specified location.,FALSE
+T1070.004,10,,preconditions,rename,file-exists,file-exists,Environment,"The test requires the TeamViewer log file to exist before it can be deleted, as indicated by the dependency to create the file if it does not exist.",FALSE
+T1070.004,4,,preconditions,rename,file-exists,file-exists,Environment,The YAML specifies that the file to delete must exist on disk at the specified location as a prerequisite.,FALSE
+T1070.004,6,,preconditions,rename,file-exists,file-exists,Environment,"The YAML specifies that the file must exist before it can be deleted, as indicated by the prereq_command.",FALSE
+T1070.004,9,,preconditions,rename,file-exists,file-exists,Environment,"The test requires a prefetch file to exist in the directory, as indicated by the error 'Cannot index into a null array'.",FALSE
+T1082,24,normal,effects,rename,not-azuread-connected,not-azuread-connected,Environment,"The evidence shows Connect-AzureAD failed because the cmdlet was not found, so no Azure AD connection was made.",FALSE
+T1560.001,11,,preconditions,rename,file-exists,file-exists,Environment,"The test requires a sample file for compression to be located at the specified location (C:\Temp\sam.hiv), but the evidence shows it was missing.",FALSE
+T1070.004,10,,effects,rename,file-deleted,file-deleted,Environment,"Per Table 1's documented File->Environment fold rule (surfaced during the nine-category ablation reverse-fold exercise): file-deleted is a filesystem-state fact, same category as file-exists (already corrected). Corrected from Information to Environment for consistency; no change to plan validity, cost, or fidelity metrics since this is a category-label fix, not a change to the predicate or its logical role.",FALSE

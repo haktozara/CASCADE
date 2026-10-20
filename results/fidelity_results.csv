@@ -1,0 +1,2 @@
+scenario,jaccard,edit_distance,tactic_overlap,generated_chain,ground_truth_chain
+starter_chain,1.000,0,1.000,T1059.001|T1547.001|T1003.001|T1021.002,T1059.001|T1547.001|T1003.001|T1021.002

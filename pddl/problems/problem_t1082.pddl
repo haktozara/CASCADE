@@ -1,0 +1,6 @@
+;; T1082 System Information Discovery - Test #1 (elevated + normal converge)
+(define (problem t1082-p1)
+  (:domain aurora-mini)
+  (:init (cmd-invokable))
+  (:goal (and (system-information-discovered) (registry-key-read)))
+)

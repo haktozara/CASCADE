@@ -1,0 +1,6 @@
+;; T1057 Process Discovery - Tests #2/#6 converge (cmd-based)
+(define (problem t1057-p1)
+  (:domain aurora-mini)
+  (:init (cmd-invokable))
+  (:goal (and (process-listing-obtained)))
+)

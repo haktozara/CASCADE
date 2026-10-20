@@ -1,0 +1,17 @@
+technique,five_cat_count,nine_cat_count,delta_Pi,five_categories,nine_categories,note
+T1059.001,3,3,0,Executor|Information|Process,executors|information|processes,
+T1547.001,4,4,0,Environment|Executor|Information|Privilege/User,executors|files|information|users,
+T1003.001,4,5,1,Environment|Executor|Information|Privilege/User,environments|executors|files|information|users,"placeholder-only, no successful evidence (T1003.001)"
+T1021.002,4,4,0,Environment|Executor|Information|Privilege/User,environments|executors|information|users,
+T1057,2,2,0,Executor|Information,executors|information,
+T1046,2,2,0,Executor|Information,executors|information,
+T1082,2,2,0,Executor|Information,executors|information,
+T1018,3,3,0,Executor|Information|Privilege/User,executors|information|users,
+T1087.001,2,2,0,Executor|Information,executors|information,
+T1112,3,3,0,Environment|Executor|Privilege/User,executors|files|users,
+T1070.004,1,1,0,Environment,files,
+T1560.001,1,2,1,Environment,environments|files,
+T1053.005,3,3,0,Environment|Executor|Information,executors|files|information,
+T1041,3,3,0,Environment|Executor|Information,data|executors|files,
+T1136.001,3,3,0,Environment|Executor|Privilege/User,environments|executors|users,
+T1055,3,3,0,Environment|Executor|Process,executors|files|processes,

@@ -1,0 +1,6 @@
+# Only needed to re-run the translation / analysis scripts in code/.
+# The demo itself needs none of these - only Fast Downward.
+openai
+pyyaml
+pandas
+openpyxl

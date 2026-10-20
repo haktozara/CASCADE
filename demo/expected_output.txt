@@ -1,0 +1,80 @@
+=== 1. Evidence: Atomic Red Team test definition (T1547.001, test 1) ===
+4:- name: Reg Key Run
+5-  auto_generated_guid: e55be3fd-3521-4610-9d1a-e210e42dcf05
+6-  description: |
+7-    Run Key Persistence
+8-
+9-    Upon successful execution, cmd.exe will modify the registry by adding \"Atomic Red Team\" to the Run key. Output will be via stdout. 
+10-  supported_platforms:
+11-  - windows
+12-  input_arguments:
+13-    command_to_execute:
+14-      description: Thing to Run
+15-      type: path
+16-      default: C:\Path\AtomicRedTeam.exe
+
+=== 2. LLM-translated predicates (GPT-4.1, temp 0, after manual review) ===
+{
+  "technique": "T1547.001",
+  "test_number": 1,
+  "preconditions": [
+    {
+      "name": "cmd-invokable",
+      "category": "Executor",
+      "justification": "The executor for this test is 'command_prompt', indicating the attack requires the ability to invoke commands via cmd.exe."
+    },
+    {
+      "name": "user-has-write-access-hkcu-run-key",
+      "category": "Privilege/User",
+      "justification": "The registry key targeted is under HKCU, so the user must have write access to their own registry hive."
+    }
+  ],
+  "effects": [
+    {
+      "name": "registry-run-key-set",
+      "category": "Environment",
+      "justification": "The test adds a value ('Atomic Red Team') to HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run, establishing persistence via the Run key."
+    },
+    {
+      "name": "registry-key-written",
+      "category": "Information",
+      "justification": "A new registry value is written as part of the persistence mechanism, as described in the YAML and implied by successful execution."
+    }
+  ],
+  "unconsumed_or_uncertain": [
+    {
+      "name": "process-spawned",
+      "note": "The test only modifies the registry and does not directly spawn a new process as part of the persistence action; process creation would occur on next logon, not during the test."
+    },
+    {
+      "name": "file-created",
+      "note": "No evidence in the YAML or execution output that a new file is created as part of this specific test; only a registry value is set."
+    }
+  ]
+}
+=== 3. The PDDL action built from that evidence ===
+  (:action set-registry-run-key
+    :precondition (and
+      (cmd-invokable)
+      (user-has-write-access-hkcu-run-key)
+      (arbitrary-code-executed)   ;; ASSUMPTION - see header note
+    )
+    :effect (and
+      (registry-run-key-set)
+      (registry-key-written)
+    )
+  )
+
+
+=== 4. Fast Downward plans the starter chain (T1059.001 -> T1547.001 -> T1003.001 -> T1021.002) ===
+Solution found!
+Plan length: 4 step(s).
+Plan cost: 4
+(exec-powershell-obfuscated )
+(set-registry-run-key )
+(dump-lsass-credentials )
+(lateral-movement-admin-share )
+; cost = 4 (unit cost)
+
+=== 5. Failure case: T1055 (process injection) - no action exists, so no plan ===
+Task is provably unsolvable.

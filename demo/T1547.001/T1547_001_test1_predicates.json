@@ -1,0 +1,38 @@
+{
+  "technique": "T1547.001",
+  "test_number": 1,
+  "preconditions": [
+    {
+      "name": "cmd-invokable",
+      "category": "Executor",
+      "justification": "The executor for this test is 'command_prompt', indicating the attack requires the ability to invoke commands via cmd.exe."
+    },
+    {
+      "name": "user-has-write-access-hkcu-run-key",
+      "category": "Privilege/User",
+      "justification": "The registry key targeted is under HKCU, so the user must have write access to their own registry hive."
+    }
+  ],
+  "effects": [
+    {
+      "name": "registry-run-key-set",
+      "category": "Environment",
+      "justification": "The test adds a value ('Atomic Red Team') to HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run, establishing persistence via the Run key."
+    },
+    {
+      "name": "registry-key-written",
+      "category": "Information",
+      "justification": "A new registry value is written as part of the persistence mechanism, as described in the YAML and implied by successful execution."
+    }
+  ],
+  "unconsumed_or_uncertain": [
+    {
+      "name": "process-spawned",
+      "note": "The test only modifies the registry and does not directly spawn a new process as part of the persistence action; process creation would occur on next logon, not during the test."
+    },
+    {
+      "name": "file-created",
+      "note": "No evidence in the YAML or execution output that a new file is created as part of this specific test; only a registry value is set."
+    }
+  ]
+}
